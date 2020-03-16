@@ -5,23 +5,35 @@ import Rainbow
 let RootFolderName = ".ewd"
 let CommandFile = "ewd.json"
 
-var currentProcess: Process?
-
-func signalHandler(signal: Int32) {
-    currentProcess?.terminate()
+func withCStrings(_ strings: [String], scoped: ([UnsafeMutablePointer<CChar>?]) throws -> Void) rethrows {
+    let cStrings = strings.map { strdup($0) }
+    try scoped(cStrings + [nil])
+    cStrings.forEach { free($0) }
 }
 
-let signals = [SIGINT, SIGTERM, SIGKILL]
-for sig in signals {
-    signal(sig, signalHandler)
+enum RunCommandError: Error {
+    case WaitPIDError
+    case POSIXSpawnError(Int32)
 }
 
-func executeCommand(_ command: String) {
-    currentProcess = Process()
-    currentProcess?.launchPath = "/bin/bash"
-    currentProcess?.arguments = ["-c", command]
-    currentProcess?.launch()
-    currentProcess?.waitUntilExit()
+func runCommand(_ command: String, completion: ((Int32) -> Void)? = nil) throws {
+    var pid: pid_t = 0
+    let args = ["sh", "-c", command]
+    let envs = ProcessInfo().environment.map { k, v in "\(k)=\(v)" }
+    try withCStrings(args) { cArgs in
+        try withCStrings(envs) { cEnvs in
+            var status = posix_spawn(&pid, "/bin/sh", nil, nil, cArgs, cEnvs)
+            if status == 0 {
+                if (waitpid(pid, &status, 0) != -1) {
+                    completion?(status)
+                } else {
+                    throw RunCommandError.WaitPIDError
+                }
+            } else {
+                throw RunCommandError.POSIXSpawnError(status)
+            }
+        }
+    }
 }
 
 func pwdFile() throws -> File {
@@ -143,8 +155,9 @@ if (args.first { $0 == "--delete" }) != nil {
 
 if args.count == 1 {
     if let command = try command(named: args[0]) {
-        executeCommand(command)
-        exit(0)
+        try runCommand(command) { code in
+            exit(code)
+        }
     } else {
         print(args[0] + " is not a stored command name")
     }
