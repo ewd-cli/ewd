@@ -1,4 +1,4 @@
-# ewd - **E**xecute **W**orking **D**irectory
+# ewd - Execute Working Directory
 
 ewd is a tool for saving commands you do frequently in the working directory to short names. This allows you to only remember the short name rather than the whole command.
 
@@ -15,21 +15,6 @@ Then typing:
 Would be the equivilant of:
 
 `$ carthage update --platform iOS --no-use-binaries`
-
-### execute command
-`ewd <command>`
-
-### set command
-`ewd --set <command> "<value>"`
-
-### show command
-`ewd --show <command>`
-
-### list all commands
-`ewd --list`
-
-### delete command
-`ewd --delete <command>`
 
 ## zsh 
 
