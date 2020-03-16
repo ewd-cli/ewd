@@ -5,8 +5,7 @@ ewd is a tool for saving commands you do frequently in the working directory to 
 ## Installation
 
 ```terminal
-$ brew tap ewd-cli/formulae
-$ brew install ewd
+$ brew tap ewd-cli/formulae; brew install ewd
 ```
 
 ## Usage
