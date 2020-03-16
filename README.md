@@ -4,21 +4,32 @@ ewd is a tool for saving commands you do frequently in the working directory to 
 
 ## Installation
 
+```terminal
+$ brew tap ewd-cli/formulae
+$ brew install ewd
+```
+
 ## Usage
 
-`$ ewd --set carthage "carthage update --platform iOS --no-use-binaries"`
+```terminal
+$ ewd --set carthage "carthage update --platform iOS --no-use-binaries"
+```
 
 Then typing:
 
-`$ ewd carthage`
+```terminal
+$ ewd carthage
+```
 
 Would be the equivilant of:
 
-`$ carthage update --platform iOS --no-use-binaries`
+```terminal
+$ carthage update --platform iOS --no-use-binaries
+```
 
 ## zsh 
 
-A basic zsh completion is included
+A basic zsh completion is included 
 
 ## Backup
 
