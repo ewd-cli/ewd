@@ -28,7 +28,13 @@ $ carthage update --platform iOS --no-use-binaries
 
 ## zsh 
 
-A basic zsh completion is included 
+A basic zsh completion is available. A oh my zsh plugin is coming soon.
+
+```terminal
+$ curl -o ~/.oh-my-zsh/completions/_ewd https://raw.githubusercontent.com/ewd-cli/ewd/master/zsh_completion/_ewd
+```
+
+This depends on oh my zsh/ You might need to create `~/.oh-my-zsh/completions/` if it doesn't exist.
 
 ## Backup
 
