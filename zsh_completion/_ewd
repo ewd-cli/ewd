@@ -1,0 +1,13 @@
+#compdef ewd
+#autoload
+ 
+local arguments
+
+arguments=(
+	'--set[set new command]'
+	'--list[list all commands]'
+	'--show[show command]'
+	'*: :($(ewd --zsh-completion-list))'
+)
+
+_arguments -s -S : $arguments
